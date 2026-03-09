@@ -31,3 +31,15 @@ FONT     = ("Courier New", 10)
 FONT_SM  = ("Courier New", 8)
 FONT_LG  = ("Courier New", 13, "bold")
 FONT_XL  = ("Courier New", 18, "bold")
+
+PORTFOLIO_FILE = "portfolio.json"
+
+def load_portfolio():
+    if os.path.exists(PORTFOLIO_FILE):
+        with open(PORTFOLIO_FILE) as f:
+            return json.load(f)
+    return {}
+
+def save_portfolio(p):
+    with open(PORTFOLIO_FILE, "w") as f:
+        json.dump(p, f)
