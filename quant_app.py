@@ -11,6 +11,7 @@ from matplotlib.figure import Figure
 import matplotlib.dates as mdates
 from datetime import datetime, timedelta
 from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_absolute_error
 import threading
@@ -304,6 +305,12 @@ class QuantApp(tk.Tk):
     def _build_ml_tab(self, parent):
         ctrl = tk.Frame(parent, bg=SURFACE2)
         ctrl.pack(fill="x", padx=8, pady=8)
+        tk.Label(ctrl, text="MODEL:", font=FONT_SM, bg=SURFACE2, fg=MUTED).pack(side="left", padx=8)
+        self.ml_model_var = tk.StringVar(value="Random Forest")
+        model_menu = ttk.Combobox(ctrl, textvariable=self.ml_model_var,
+                                   values=["Linear Regression", "Random Forest"],
+                                   font=FONT_SM, width=16, state="readonly")
+        model_menu.pack(side="left", padx=4)
         tk.Label(ctrl, text="FORECAST DAYS:", font=FONT_SM, bg=SURFACE2, fg=MUTED).pack(side="left", padx=8)
         self.forecast_days = tk.IntVar(value=30)
         tk.Spinbox(ctrl, from_=7, to=90, textvariable=self.forecast_days,
@@ -481,7 +488,10 @@ class QuantApp(tk.Tk):
             X_train, X_test = X[:split], X[split:]
             y_train, y_test = y[:split], y[split:]
 
-            model = LinearRegression()
+            if self.ml_model_var.get() == "Random Forest":
+                model = RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1)
+            else:
+                model = LinearRegression()
             model.fit(X_train, y_train)
             y_pred = model.predict(X_test)
 
@@ -523,7 +533,7 @@ class QuantApp(tk.Tk):
         ax.plot(future_dates, future, color=AMBER, linewidth=2, linestyle="--", label=f"{len(future)}-day Forecast")
         ax.fill_between(future_dates, future * 0.97, future * 1.03, alpha=0.1, color=AMBER)
         ax.axvline(x=dates[-1], color=MUTED, linewidth=0.8, linestyle=":")
-        ax.set_title(f"ML Price Prediction — {self.current_ticker.get().upper()}", color=TEXT)
+        ax.set_title(f"ML Price Prediction — {self.current_ticker.get().upper()} ({self.ml_model_var.get()})", color=TEXT)
         ax.legend(fontsize=7)
         ax.grid(True, alpha=0.3)
         self.ml_fig.tight_layout()
