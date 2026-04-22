@@ -2,7 +2,7 @@
 
 A Bloomberg Terminal-inspired desktop application for analyzing financial markets, built with Python and Tkinter.
 
-![Python](https://img.shields.io/badge/Python-3.8-blue?style=flat-square&logo=python) ![Tkinter](https://img.shields.io/badge/GUI-Tkinter-orange?style=flat-square) ![Status](https://img.shields.io/badge/Status-In%20Development-yellow?style=flat-square)
+![Python](https://img.shields.io/badge/Python-3.8-blue?style=flat-square&logo=python) ![Tkinter](https://img.shields.io/badge/GUI-Tkinter-orange?style=flat-square) ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
 
 ---
 
